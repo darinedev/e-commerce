@@ -3,6 +3,8 @@ const mongoose =require("mongoose")
 const dotenv =require('dotenv')
 const cors = require('cors')
 const app = express();
+const userRouter =require("./routes/user.route")
+
 //config dotenv
 dotenv.config()
 //Les cors
@@ -19,6 +21,8 @@ app.get("/",(req,res)=>{
 res.send("bonjour");
 
 });
+app.use('/api/users', userRouter);
+
 const categorieRouter =require("./routes/categorie.route")
 app.use('/api/categories', categorieRouter);
 const scategorieRouter =require("./routes/scategorie.route")

@@ -3,7 +3,7 @@ const router = express.Router();
 const Article=require("../models/article")
 const Scategorie =require("../models/scategorie")
 // afficher la liste des articles.
-router.get('/', async (req, res, )=> {
+router.get('/', async (req, res )=>{
 try {
 const articles = await Article.find({}, null, {sort: {'_id': -
 1}}).populate("scategorieID").exec();
@@ -59,8 +59,6 @@ req.params.articleId,
 );
 const articles = await
 Article.findById(art._id).populate("scategorieID").exec();
-
-25
 res.status(200).json(articles);
 } catch (error) {
 res.status(404).json({ message: error.message });
@@ -96,24 +94,6 @@ const sousCategorieIDs = sousCategories.map(scategorie => scategorie._id);
 const articles = await Article.find({ scategorieID: { $in:
 sousCategorieIDs } }).exec();
 res.status(200).json(articles);
-} catch (error) {
-res.status(404).json({ message: error.message });
-}
-});
-// afficher la liste des articles par page
-router.get('/pagination', async(req, res) => {
-const page = req.query.page ||1 // Current page
-const limit = req.query.limit ||5; // Number of items per page
-// Calculez le nombre d'éléments à sauter (offset)
-const offset = (page - 1) * limit;
-try {
-// Effectuez la requête à votre source de données en utilisant les paramètresde pagination
-
-const articlesTot = await Article.countDocuments();
-const articles = await Article.find( {}, null, {sort: {'_id': -1}})
-.skip(offset)
-.limit(limit)
-res.status(200).json({articles:articles,tot:articlesTot});
 } catch (error) {
 res.status(404).json({ message: error.message });
 }
